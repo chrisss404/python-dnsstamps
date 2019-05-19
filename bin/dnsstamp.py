@@ -49,7 +49,7 @@ class DnsStampCli(object):
 
         args = parser.parse_args(sys.argv[2:])
 
-        options = [Option.DNSSEC, Option.NO_LOGS, Option.NO_BLOCKS]
+        options = []
         if args.dnssec:
             options.append(Option.DNSSEC)
         if args.logs:
@@ -83,7 +83,7 @@ class DnsStampCli(object):
 
         args = parser.parse_args(sys.argv[2:])
 
-        options = [Option.DNSSEC, Option.NO_LOGS, Option.NO_BLOCKS]
+        options = []
         if args.dnssec:
             options.append(Option.DNSSEC)
         if args.logs:
@@ -126,7 +126,7 @@ class DnsStampCli(object):
 
         args = parser.parse_args(sys.argv[2:])
 
-        options = [Option.DNSSEC, Option.NO_LOGS, Option.NO_BLOCKS]
+        options = []
         if args.dnssec:
             options.append(Option.DNSSEC)
         if args.logs:
@@ -168,7 +168,7 @@ class DnsStampCli(object):
 
         args = parser.parse_args(sys.argv[2:])
 
-        options = [Option.DNSSEC, Option.NO_LOGS, Option.NO_BLOCKS]
+        options = []
         if args.dnssec:
             options.append(Option.DNSSEC)
         if args.logs:
