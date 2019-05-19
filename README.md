@@ -1,12 +1,12 @@
 
+For general information about DNS stamps please visit https://dnscrypt.info/stamps-specifications
+
 ## Install
 
     python3 -m pip install --user dnsstamps
 
 
 ## Generate DNS stamps
-
-For general information about DNS stamps please visit https://dnscrypt.info/stamps-specifications
 
 ### Plain
 
@@ -31,7 +31,7 @@ First get the public key, if you use dnsdist, you can get it in this way
 
 Then run
 
-    $ dnsstamp.py dnscrypt -s -a 127.0.0.1 -k CB6A:DC5C:29F9:5510:0B65:BF12:94FE:5684:579A:B349:9CC9:798F:00D0:1BB5:C1A9:A2C7 -n 2.dnscrypt-cert.example.com
+    $ dnsstamp.py dnscrypt -s -a 127.0.0.1 -n 2.dnscrypt-cert.example.com -k CB6A:DC5C:29F9:5510:0B65:BF12:94FE:5684:579A:B349:9CC9:798F:00D0:1BB5:C1A9:A2C7
     DNSCrypt DNS stamp
     ==================
     
@@ -54,7 +54,7 @@ First get your certificate's signed data hash (tbsCertificate)
 
 Then run
 
-    $ dnsstamp.py doh -s -a 127.0.0.1 -t 3e1a1a0f6c53f3e97a492d57084b5b9807059ee057ab1505876fd83fda3db838 -n doh.example.com -p /dns-query
+    $ dnsstamp.py doh -s -a 127.0.0.1 -n doh.example.com -p /dns-query -t 3e1a1a0f6c53f3e97a492d57084b5b9807059ee057ab1505876fd83fda3db838
     DoH DNS stamp
     =============
     
@@ -79,7 +79,7 @@ First get your certificate's signed data hash (tbsCertificate)
 
 Then run
 
-    $ dnsstamp.py dot -s -a 127.0.0.1 -t 2f1af500a66d4b83760766e41cb1123ebd6b95853afaef3bcdf39cbde3ab30b6 -n dot.example.com
+    $ dnsstamp.py dot -s -a 127.0.0.1 -n dot.example.com -t 2f1af500a66d4b83760766e41cb1123ebd6b95853afaef3bcdf39cbde3ab30b6
     DoT DNS stamp
     =============
     
