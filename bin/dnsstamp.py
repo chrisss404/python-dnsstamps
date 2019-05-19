@@ -59,7 +59,7 @@ class DnsStampCli(object):
         stamp = dnsstamps.plain(args.address, options)
 
         print('Plain DNS stamp')
-        print('==================')
+        print('===============')
         print('')
         print('DNSSEC: %s' % ('yes' if args.dnssec else 'no'))
         print('No logs: %s' % ('yes' if args.logs else 'no'))

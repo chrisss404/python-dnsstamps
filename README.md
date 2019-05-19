@@ -12,7 +12,7 @@ For general information about DNS stamps please visit https://dnscrypt.info/stam
 
     $ dnsstamp.py plain -s -a 127.0.0.1
     Plain DNS stamp
-    ==================
+    ===============
     
     DNSSEC: yes
     No logs: no
