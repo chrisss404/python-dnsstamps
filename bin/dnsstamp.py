@@ -66,7 +66,7 @@ class DnsStampCli(object):
         print('No filter: %s' % ('yes' if args.filter else 'no'))
         print('IP Address: %s' % args.address)
         print('')
-        print('Stamp: %s' % stamp)
+        print(stamp)
 
     def dnscrypt(self):
         parser = argparse.ArgumentParser(description='Create DNSCrypt stamp')
@@ -102,7 +102,7 @@ class DnsStampCli(object):
         print('Public key: %s' % args.public_key)
         print('Provider name: %s' % args.provider_name)
         print('')
-        print('Stamp: %s' % stamp)
+        print(stamp)
 
     def doh(self):
         parser = argparse.ArgumentParser(description='Create DNS over HTTPS stamp')
@@ -148,7 +148,7 @@ class DnsStampCli(object):
         print('Path: %s' % args.path)
         print('Bootstrap IPs: %s' % args.bootstrap_ips)
         print('')
-        print('Stamp: %s' % stamp)
+        print(stamp)
 
     def dot(self):
         parser = argparse.ArgumentParser(description='Create DNS over TLS stamp')
@@ -189,7 +189,7 @@ class DnsStampCli(object):
         print('Hashes: %s' % args.hashes)
         print('Bootstrap IPs: %s' % args.bootstrap_ips)
         print('')
-        print('Stamp: %s' % stamp)
+        print(stamp)
 
 
 if __name__ == '__main__':

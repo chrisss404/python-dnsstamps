@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="dnsstamps",
-    version="1.0.1",
+    version="1.0.2",
     author="Christian Hofer",
     author_email="chrisss404@gmail.com",
     description="Create DNS stamps",

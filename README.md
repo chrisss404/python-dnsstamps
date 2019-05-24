@@ -19,7 +19,7 @@ For general information about DNS stamps please visit https://dnscrypt.info/stam
     No filter: no
     IP Address: 127.0.0.1
     
-    Stamp: sdns://AAEAAAAAAAAACTEyNy4wLjAuMQ
+    sdns://AAEAAAAAAAAACTEyNy4wLjAuMQ
 
 
 ### DNSCrypt
@@ -42,7 +42,7 @@ Then run
     Public key: CB6A:DC5C:29F9:5510:0B65:BF12:94FE:5684:579A:B349:9CC9:798F:00D0:1BB5:C1A9:A2C7
     Provider name: 2.dnscrypt-cert.example.com
     
-    Stamp: sdns://AQEAAAAAAAAACTEyNy4wLjAuMSDLatxcKflVEAtlvxKU_laEV5qzSZzJeY8A0Bu1wamixxsyLmRuc2NyeXB0LWNlcnQuZXhhbXBsZS5jb20
+    sdns://AQEAAAAAAAAACTEyNy4wLjAuMSDLatxcKflVEAtlvxKU_laEV5qzSZzJeY8A0Bu1wamixxsyLmRuc2NyeXB0LWNlcnQuZXhhbXBsZS5jb20
 
 
 ### DNS over HTTPS
@@ -67,7 +67,7 @@ Then run
     Path: /dns-query
     Bootstrap IPs: None
     
-    Stamp: sdns://AgEAAAAAAAAACTEyNy4wLjAuMSA-GhoPbFPz6XpJLVcIS1uYBwWe4FerFQWHb9g_2j24OA9kb2guZXhhbXBsZS5jb20KL2Rucy1xdWVyeQ
+    sdns://AgEAAAAAAAAACTEyNy4wLjAuMSA-GhoPbFPz6XpJLVcIS1uYBwWe4FerFQWHb9g_2j24OA9kb2guZXhhbXBsZS5jb20KL2Rucy1xdWVyeQ
 
 
 ### DNS over TLS
@@ -91,7 +91,7 @@ Then run
     Hashes: 2f1af500a66d4b83760766e41cb1123ebd6b95853afaef3bcdf39cbde3ab30b6
     Bootstrap IPs: None
     
-    Stamp: sdns://AwEAAAAAAAAACTEyNy4wLjAuMSAvGvUApm1Lg3YHZuQcsRI-vWuVhTr67zvN85y946swtg9kb3QuZXhhbXBsZS5jb20
+    sdns://AwEAAAAAAAAACTEyNy4wLjAuMSAvGvUApm1Lg3YHZuQcsRI-vWuVhTr67zvN85y946swtg9kb3QuZXhhbXBsZS5jb20
 
 
 ## Using the library
@@ -99,10 +99,10 @@ Then run
     import dnsstamps
     from dnsstamps import Option
     
-    # plain
+    # Plain
     stamp = dnsstamps.plain("127.0.0.1", [Option.DNSSEC, Option.NO_LOGS, Option.NO_BLOCKS])
     
-    # dnscrypt
+    # DNSCrypt
     stamp = dnsstamps.dnscrypt("127.0.0.1", "provider-public-key", "provider-name", [Option.DNSSEC])
     
     # DNS over HTTPS
