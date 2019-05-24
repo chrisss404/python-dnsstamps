@@ -1,12 +1,12 @@
 
 For general information about DNS stamps please visit https://dnscrypt.info/stamps-specifications
 
-## Install
+## Installation
 
     python3 -m pip install --user dnsstamps
 
 
-## Generate DNS stamps
+## Generating DNS stamps
 
 ### Plain
 
@@ -94,12 +94,30 @@ Then run
     Stamp: sdns://AwEAAAAAAAAACTEyNy4wLjAuMSAvGvUApm1Lg3YHZuQcsRI-vWuVhTr67zvN85y946swtg9kb3QuZXhhbXBsZS5jb20
 
 
-## Run tests
+## Using the library
+    
+    import dnsstamps
+    from dnsstamps import Option
+    
+    # plain
+    stamp = dnsstamps.plain("127.0.0.1", [Option.DNSSEC, Option.NO_LOGS, Option.NO_BLOCKS])
+    
+    # dnscrypt
+    stamp = dnsstamps.dnscrypt("127.0.0.1", "provider-public-key", "provider-name", [Option.DNSSEC])
+    
+    # DNS over HTTPS
+    stamp = dnsstamps.doh("127.0.0.1", ["tbs-certificate-hash"], "hostname", "path", [Option.NO_LOGS])
+    
+    # DNS over TLS
+    stamp = dnsstamps.dot("127.0.0.1", ["tbs-certificate-hash"], "hostname", [Option.NO_BLOCKS])
+
+
+## Running tests
 
     python3 -m unittest discover
 
 
-## Build and upload
+## Updating PyPI package
     
     python3 setup.py sdist bdist_wheel
     python3 -m twine upload dist/*
