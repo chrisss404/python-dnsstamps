@@ -3,8 +3,8 @@
 import argparse
 import sys
 
-import dnsstamps
-from dnsstamps import Option
+import dnsstamp
+from dnsstamp import Option
 
 
 class DnsStampCli(object):
@@ -55,8 +55,8 @@ class DnsStampCli(object):
         if args.logs:
             options.append(Option.NO_LOGS)
         if args.filter:
-            options.append(Option.NO_BLOCKS)
-        stamp = dnsstamps.plain(args.address, options)
+            options.append(Option.NO_FILTERS)
+        stamp = dnsstamp.create_plain(args.address, options)
 
         print('Plain DNS stamp')
         print('===============')
@@ -89,8 +89,8 @@ class DnsStampCli(object):
         if args.logs:
             options.append(Option.NO_LOGS)
         if args.filter:
-            options.append(Option.NO_BLOCKS)
-        stamp = dnsstamps.dnscrypt(args.address, args.public_key, args.provider_name, options)
+            options.append(Option.NO_FILTERS)
+        stamp = dnsstamp.create_dnscrypt(args.address, args.public_key, args.provider_name, options)
 
         print('DNSCrypt DNS stamp')
         print('==================')
@@ -132,9 +132,9 @@ class DnsStampCli(object):
         if args.logs:
             options.append(Option.NO_LOGS)
         if args.filter:
-            options.append(Option.NO_BLOCKS)
-        stamp = dnsstamps.doh(args.address, args.hashes.split(','), args.hostname, args.path, options,
-                              [] if args.bootstrap_ips is None else args.bootstrap_ips.split(','))
+            options.append(Option.NO_FILTERS)
+        stamp = dnsstamp.create_doh(args.address, args.hashes.split(','), args.hostname, args.path, options,
+                                    [] if args.bootstrap_ips is None else args.bootstrap_ips.split(','))
 
         print('DoH DNS stamp')
         print('=============')
@@ -174,9 +174,9 @@ class DnsStampCli(object):
         if args.logs:
             options.append(Option.NO_LOGS)
         if args.filter:
-            options.append(Option.NO_BLOCKS)
-        stamp = dnsstamps.dot(args.address, args.hashes.split(','), args.hostname, options,
-                              [] if args.bootstrap_ips is None else args.bootstrap_ips.split(','))
+            options.append(Option.NO_FILTERS)
+        stamp = dnsstamp.create_dot(args.address, args.hashes.split(','), args.hostname, options,
+                                    [] if args.bootstrap_ips is None else args.bootstrap_ips.split(','))
 
         print('DoT DNS stamp')
         print('=============')
