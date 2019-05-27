@@ -4,7 +4,7 @@ import base64
 import binascii
 import struct
 
-from dnsstamp import Option
+from dnsstamps import Option
 
 
 def prepare_props(options):

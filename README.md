@@ -96,20 +96,20 @@ Then run
 
 ## Using the library
     
-    import dnsstamp
-    from dnsstamp import Option
+    import dnsstamps
+    from dnsstamps import Option
     
     # Plain
-    stamp = dnsstamp.create_plain("127.0.0.1", [Option.DNSSEC, Option.NO_LOGS, Option.NO_FILTERS])
+    stamp = dnsstamps.create_plain("127.0.0.1", [Option.DNSSEC, Option.NO_LOGS, Option.NO_FILTERS])
     
     # DNSCrypt
-    stamp = dnsstamp.create_dnscrypt("127.0.0.1", "provider-public-key", "provider-name", [Option.DNSSEC])
+    stamp = dnsstamps.create_dnscrypt("127.0.0.1", "provider-public-key", "provider-name", [Option.DNSSEC])
     
     # DNS over HTTPS
-    stamp = dnsstamp.create_doh("127.0.0.1", ["tbs-certificate-hash"], "hostname", "path", [Option.NO_LOGS])
+    stamp = dnsstamps.create_doh("127.0.0.1", ["tbs-certificate-hash"], "hostname", "path", [Option.NO_LOGS])
     
     # DNS over TLS
-    stamp = dnsstamp.create_dot("127.0.0.1", ["tbs-certificate-hash"], "hostname", [Option.NO_FILTERS])
+    stamp = dnsstamps.create_dot("127.0.0.1", ["tbs-certificate-hash"], "hostname", [Option.NO_FILTERS])
 
 
 ## Running tests
