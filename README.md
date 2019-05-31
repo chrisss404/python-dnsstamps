@@ -1,5 +1,5 @@
 
-For general information about DNS stamps please visit https://dnscrypt.info/stamps-specifications
+For general information about DNS stamps, see https://dnscrypt.info/stamps-specifications
 
 ## Installation
 
@@ -110,6 +110,12 @@ Then run
     
     # DNS over TLS
     stamp = dnsstamps.create_dot("127.0.0.1", ["tbs-certificate-hash"], "hostname", [Option.NO_FILTERS])
+
+
+## Setting up your own DNS server
+
+* [Unbound](https://github.com/jedisct1/dnscrypt-proxy/wiki/How-to-setup-your-own-DNSCrypt-server-in-less-than-10-minutes) (DNSSEC, DNSCrypt)
+* [PowerDNS](https://github.com/chrisss404/powerdns#private-recursor) (DNSSEC, DNSCrypt, DoH, DoT, Authoritative Server)
 
 
 ## Running tests
