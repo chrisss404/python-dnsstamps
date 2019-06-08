@@ -104,6 +104,18 @@ class TestGenerator(unittest.TestCase):
             dnsstamps.create_doh(address, hashes, hostname, path, bootstrap_ips=bootstrap_ips),
             "Invalid stamp")
 
+    def test_generate_doh_stamp_without_hashes(self):
+        address = ""
+        hashes = []
+        hostname = "doh.example.com"
+        path = "/dns-query"
+        options = [Option.DNSSEC, Option.NO_FILTERS]
+
+        self.assertEqual(
+            "sdns://AgUAAAAAAAAAAAAPZG9oLmV4YW1wbGUuY29tCi9kbnMtcXVlcnk",
+            dnsstamps.create_doh(address, hashes, hostname, path, options),
+            "Invalid stamp")
+
     def test_generate_dot_stamp(self):
         address = "[fe80::6d6d:f72c:3ad:60b8]"
         hashes = ["3e1a1a0f6c53f3e97a492d57084b5b9807059ee057ab1505876fd83fda3db838"]
@@ -145,4 +157,15 @@ class TestGenerator(unittest.TestCase):
         self.assertEqual(
             "sdns://AwAAAAAAAAAACTEyNy4wLjAuMSA-GhoPbFPz6XpJLVcIS1uYBwWe4FerFQWHb9g_2j24OA9kb3QuZXhhbXBsZS5jb20HMS4xLjEuMQ",
             dnsstamps.create_dot(address, hashes, hostname, bootstrap_ips=bootstrap_ips),
+            "Invalid stamp")
+
+    def test_generate_dot_stamp_without_hashes(self):
+        address = ""
+        hashes = []
+        hostname = "dot.example.com"
+        options = [Option.DNSSEC, Option.NO_FILTERS]
+
+        self.assertEqual(
+            "sdns://AwUAAAAAAAAAAAAPZG90LmV4YW1wbGUuY29t",
+            dnsstamps.create_dot(address, hashes, hostname, options),
             "Invalid stamp")

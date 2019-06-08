@@ -58,6 +58,9 @@ def build_dnscrypt(parameter):
 
 
 def build_doh(parameter):
+    if len(parameter.hashes) == 0:
+        parameter.hashes.append("")
+
     return create_stamp(
         pack_protocol(parameter.protocol) +
         pack_options(parameter.options) +
@@ -70,6 +73,9 @@ def build_doh(parameter):
 
 
 def build_dot(parameter):
+    if len(parameter.hashes) == 0:
+        parameter.hashes.append("")
+
     return create_stamp(
         pack_protocol(parameter.protocol) +
         pack_options(parameter.options) +

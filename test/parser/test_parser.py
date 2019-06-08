@@ -112,15 +112,15 @@ class TestParser(unittest.TestCase):
         self.assertEqual("/dns-query", parameter.path, "Invalid path")
         self.assertEqual(["1.1.1.1"], parameter.bootstrap_ips, "Invalid bootstrap_ips")
 
-    def test_parse_doh_stamp_google_static(self):
-        parameter = dnsstamps.parse("sdns://AgUAAAAAAAAAAAAOZG5zLmdvb2dsZS5jb20NL2V4cGVyaW1lbnRhbA")
+    def test_parse_doh_stamp_without_hashes(self):
+        parameter = dnsstamps.parse("sdns://AgUAAAAAAAAAAAAPZG9oLmV4YW1wbGUuY29tCi9kbnMtcXVlcnk")
 
         self.assertEqual(Protocol.DOH, parameter.protocol, "Invalid protocol")
         self.assertEqual([Option.DNSSEC, Option.NO_FILTERS], parameter.options, "Invalid options")
         self.assertEqual("", parameter.address, "Invalid address")
         self.assertEqual([], parameter.hashes, "Invalid hashes")
-        self.assertEqual("dns.google.com", parameter.hostname, "Invalid hostname")
-        self.assertEqual("/experimental", parameter.path, "Invalid path")
+        self.assertEqual("doh.example.com", parameter.hostname, "Invalid hostname")
+        self.assertEqual("/dns-query", parameter.path, "Invalid path")
         self.assertEqual([], parameter.bootstrap_ips, "Invalid bootstrap_ips")
 
     def test_parse_dot_stamp(self):
@@ -171,3 +171,13 @@ class TestParser(unittest.TestCase):
                          "Invalid hashes")
         self.assertEqual("dot.example.com", parameter.hostname, "Invalid hostname")
         self.assertEqual(["1.1.1.1"], parameter.bootstrap_ips, "Invalid bootstrap_ips")
+
+    def test_parse_dot_stamp_without_hashes(self):
+        parameter = dnsstamps.parse("sdns://AwUAAAAAAAAAAAAPZG90LmV4YW1wbGUuY29t")
+
+        self.assertEqual(Protocol.DOT, parameter.protocol, "Invalid protocol")
+        self.assertEqual([Option.DNSSEC, Option.NO_FILTERS], parameter.options, "Invalid options")
+        self.assertEqual("", parameter.address, "Invalid address")
+        self.assertEqual([], parameter.hashes, "Invalid hashes")
+        self.assertEqual("dot.example.com", parameter.hostname, "Invalid hostname")
+        self.assertEqual([], parameter.bootstrap_ips, "Invalid bootstrap_ips")
