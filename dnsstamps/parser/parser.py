@@ -69,6 +69,11 @@ def consume_text_array(state):
 def consume_raw(state):
     try:
         length = struct.unpack('<B', state.data[:1])[0]
+
+        if length == 0:
+            state.data = state.data[1:]
+            return None
+
         bytes = state.data[1:length + 1]
         try:
             bytes.decode('utf-8')

@@ -112,6 +112,17 @@ class TestParser(unittest.TestCase):
         self.assertEqual("/dns-query", parameter.path, "Invalid path")
         self.assertEqual(["1.1.1.1"], parameter.bootstrap_ips, "Invalid bootstrap_ips")
 
+    def test_parse_doh_stamp_google_static(self):
+        parameter = dnsstamps.parse("sdns://AgUAAAAAAAAAAAAOZG5zLmdvb2dsZS5jb20NL2V4cGVyaW1lbnRhbA")
+
+        self.assertEqual(Protocol.DOH, parameter.protocol, "Invalid protocol")
+        self.assertEqual([Option.DNSSEC, Option.NO_FILTERS], parameter.options, "Invalid options")
+        self.assertEqual("", parameter.address, "Invalid address")
+        self.assertEqual([], parameter.hashes, "Invalid hashes")
+        self.assertEqual("dns.google.com", parameter.hostname, "Invalid hostname")
+        self.assertEqual("/experimental", parameter.path, "Invalid path")
+        self.assertEqual([], parameter.bootstrap_ips, "Invalid bootstrap_ips")
+
     def test_parse_dot_stamp(self):
         parameter = dnsstamps.parse(
             "sdns://AwAAAAAAAAAAGltmZTgwOjo2ZDZkOmY3MmM6M2FkOjYwYjhdID4aGg9sU_PpekktVwhLW5gHBZ7gV6sVBYdv2D_aPbg4D2RvdC5leGFtcGxlLmNvbQ")
