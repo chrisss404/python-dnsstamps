@@ -35,13 +35,13 @@ class DnsStampCli(object):
                             help="the ip address of the DNS server")
 
     def __init__(self):
-        parser = argparse.ArgumentParser(usage='%(prog)s <protocol> [<args>]')
-        parser.add_argument('protocol',
+        parser = argparse.ArgumentParser(usage='%(prog)s <command> [<args>]')
+        parser.add_argument('command',
                             choices=['parse', 'plain', 'dnscrypt', 'doh', 'dot'],
                             help='The command to execute.')
 
         args = parser.parse_args(sys.argv[1:2])
-        getattr(self, args.protocol)()
+        getattr(self, args.command)()
 
     def parse(self):
         parser = argparse.ArgumentParser(description='Parse DNS stamp.')
