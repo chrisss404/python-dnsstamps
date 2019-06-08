@@ -68,7 +68,7 @@ class DnsStampCli(object):
             options.append(Option.NO_LOGS)
         if args.filter:
             options.append(Option.NO_FILTERS)
-        parameter = dnsstamps.prepare_plain(args.address, options)
+        parameter = dnsstamps.prepare_plain("" if args.address is None else args.address, options)
         dnsstamps.format(parameter)
 
     def dnscrypt(self):
@@ -93,7 +93,8 @@ class DnsStampCli(object):
             options.append(Option.NO_LOGS)
         if args.filter:
             options.append(Option.NO_FILTERS)
-        parameter = dnsstamps.prepare_dnscrypt(args.address, args.public_key, args.provider_name, options)
+        parameter = dnsstamps.prepare_dnscrypt("" if args.address is None else args.address, args.public_key,
+                                               args.provider_name, options)
         dnsstamps.format(parameter)
 
     def doh(self):
@@ -124,7 +125,9 @@ class DnsStampCli(object):
             options.append(Option.NO_LOGS)
         if args.filter:
             options.append(Option.NO_FILTERS)
-        parameter = dnsstamps.prepare_doh(args.address, args.hashes.split(','), args.hostname, args.path, options,
+        parameter = dnsstamps.prepare_doh("" if args.address is None else args.address,
+                                          [] if args.hashes is None else args.hashes.split(','), args.hostname,
+                                          args.path, options,
                                           [] if args.bootstrap_ips is None else args.bootstrap_ips.split(','))
         dnsstamps.format(parameter)
 
@@ -152,7 +155,8 @@ class DnsStampCli(object):
             options.append(Option.NO_LOGS)
         if args.filter:
             options.append(Option.NO_FILTERS)
-        parameter = dnsstamps.prepare_dot(args.address, args.hashes.split(','), args.hostname, options,
+        parameter = dnsstamps.prepare_dot("" if args.address is None else args.address,
+                                          [] if args.hashes is None else args.hashes.split(','), args.hostname, options,
                                           [] if args.bootstrap_ips is None else args.bootstrap_ips.split(','))
         dnsstamps.format(parameter)
 
