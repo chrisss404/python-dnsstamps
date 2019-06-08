@@ -30,7 +30,6 @@ class DnsStampCli(object):
         parser.set_defaults(filter=False)
 
         parser.add_argument('-a', '--address',
-                            required=True,
                             type=str,
                             help="the ip address of the DNS server")
 
@@ -102,7 +101,6 @@ class DnsStampCli(object):
         self.append_common_arguments(parser)
 
         parser.add_argument('-t', '--hashes',
-                            required=True,
                             type=str,
                             help="a comma-separated list of tbs certificate hashes (e.g.: 3e1a1a0f6c53f3e97a492d57084b5b9807059ee057ab1505876fd83fda3db838)")
         parser.add_argument('-n', '--hostname',
@@ -135,7 +133,6 @@ class DnsStampCli(object):
         self.append_common_arguments(parser)
 
         parser.add_argument('-t', '--hashes',
-                            required=True,
                             type=str,
                             help="a comma-separated list of tbs certificate hashes (e.g.: 3e1a1a0f6c53f3e97a492d57084b5b9807059ee057ab1505876fd83fda3db838)")
         parser.add_argument('-n', '--hostname',
