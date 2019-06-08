@@ -53,7 +53,7 @@ class DnsStampCli(object):
             parameter = dnsstamps.parse(args.stamp)
             dnsstamps.format(parameter)
         except:
-            print("Unable to parse stamp <%s>" % args.stamp)
+            print("Unable to parse DNS stamp <%s>" % args.stamp)
 
     def plain(self):
         parser = argparse.ArgumentParser(description='Create plain stamp')

@@ -62,7 +62,7 @@ Then run
     No logs: no
     No filter: no
     IP Address: 127.0.0.1
-    Hashes: 3e1a1a0f6c53f3e97a492d57084b5b9807059ee057ab1505876fd83fda3db838
+    Hashes: ['3e1a1a0f6c53f3e97a492d57084b5b9807059ee057ab1505876fd83fda3db838']
     Hostname: doh.example.com
     Path: /dns-query
     Bootstrap IPs: []
@@ -88,7 +88,7 @@ Then run
     No filter: no
     IP Address: 127.0.0.1
     Hostname: dot.example.com
-    Hashes: 2f1af500a66d4b83760766e41cb1123ebd6b95853afaef3bcdf39cbde3ab30b6
+    Hashes: ['2f1af500a66d4b83760766e41cb1123ebd6b95853afaef3bcdf39cbde3ab30b6']
     Bootstrap IPs: []
     
     sdns://AwEAAAAAAAAACTEyNy4wLjAuMSAvGvUApm1Lg3YHZuQcsRI-vWuVhTr67zvN85y946swtg9kb3QuZXhhbXBsZS5jb20
