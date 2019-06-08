@@ -30,7 +30,7 @@ def pack_text(text):
 
 def pack_raw(raw):
     if isinstance(raw, str):
-        raw = raw.replace(":", "")
+        raw = raw.replace(":", "").strip()
     binary = binascii.unhexlify(raw)
     return struct.pack("<B", len(binary)) + binary
 

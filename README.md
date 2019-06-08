@@ -117,17 +117,18 @@ Then run
     stamp = dnsstamps.create_plain("127.0.0.1", [Option.DNSSEC, Option.NO_LOGS, Option.NO_FILTERS])
     
     # DNSCrypt
-    stamp = dnsstamps.create_dnscrypt("127.0.0.1", "provider-public-key", "provider-name", [Option.DNSSEC])
+    stamp = dnsstamps.create_dnscrypt("127.0.0.1", "CB6A:DC5C", "provider-name", [Option.DNSSEC])
     
     # DNS over HTTPS
-    stamp = dnsstamps.create_doh("127.0.0.1", ["tbs-certificate-hash"], "hostname", "path", [Option.NO_LOGS])
+    stamp = dnsstamps.create_doh("127.0.0.1", ["3e1a1a0f"], "hostname", "path", [Option.NO_LOGS])
     
     # DNS over TLS
-    stamp = dnsstamps.create_dot("127.0.0.1", ["tbs-certificate-hash"], "hostname", [Option.NO_FILTERS])
+    stamp = dnsstamps.create_dot("127.0.0.1", ["d0b24377"], "hostname", [Option.NO_FILTERS])
     
     # Parse
     parameter = dnsstamps.parse("sdns://AAEAAAAAAAAACTEyNy4wLjAuMQ")
-    dnstamps.format(parameter)
+    dnsstamps.format(parameter)
+    stamp = dnsstamps.build(parameter)
 
 
 ## Running tests
