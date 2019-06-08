@@ -8,7 +8,7 @@ setuptools.setup(
     version="1.1.6",
     author="Christian Hofer",
     author_email="chrisss404@gmail.com",
-    description="Create DNS stamps",
+    description="Create and parse DNS stamps with ease.",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/chrisss404/python-dnsstamps",
