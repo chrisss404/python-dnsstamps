@@ -2,9 +2,24 @@ import unittest
 
 import dnsstamps
 from dnsstamps import Option
+from dnsstamps import Parameter
 
 
-class TestStampGenerator(unittest.TestCase):
+class TestGenerator(unittest.TestCase):
+
+    def test_build_with_invalid_parameter_type(self):
+        with self.assertRaises(Exception) as context:
+            dnsstamps.build(None)
+        self.assertEqual(
+            "Invalid parameter type <class 'NoneType'>",
+            str(context.exception),
+            "Invalid parameter type")
+
+    def test_build_with_empty_parameters(self):
+        self.assertEqual(
+            "sdns://AAAAAAAAAAAACTEyNy4wLjAuMQ",
+            dnsstamps.build(Parameter()),
+            "Invalid stamp")
 
     def test_generate_plain_stamp(self):
         address = "[fe80::6d6d:f72c:3ad:60b8]"

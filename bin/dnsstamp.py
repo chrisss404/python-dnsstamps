@@ -37,11 +37,24 @@ class DnsStampCli(object):
     def __init__(self):
         parser = argparse.ArgumentParser(usage='%(prog)s <protocol> [<args>]')
         parser.add_argument('protocol',
-                            choices=['plain', 'dnscrypt', 'doh', 'dot'],
-                            help='The protocol used by the DNS server')
+                            choices=['parse', 'plain', 'dnscrypt', 'doh', 'dot'],
+                            help='The command to execute.')
 
         args = parser.parse_args(sys.argv[1:2])
         getattr(self, args.protocol)()
+
+    def parse(self):
+        parser = argparse.ArgumentParser(description='Parse DNS stamp.')
+
+        parser.add_argument('stamp', type=str, help='The stamp to parse.')
+
+        args = parser.parse_args(sys.argv[2:])
+
+        try:
+            parameter = dnsstamps.parse(args.stamp)
+            dnsstamps.format(parameter)
+        except:
+            print("Unable to parse stamp <%s>" % args.stamp)
 
     def plain(self):
         parser = argparse.ArgumentParser(description='Create plain stamp')
@@ -56,17 +69,8 @@ class DnsStampCli(object):
             options.append(Option.NO_LOGS)
         if args.filter:
             options.append(Option.NO_FILTERS)
-        stamp = dnsstamps.create_plain(args.address, options)
-
-        print('Plain DNS stamp')
-        print('===============')
-        print('')
-        print('DNSSEC: %s' % ('yes' if args.dnssec else 'no'))
-        print('No logs: %s' % ('yes' if args.logs else 'no'))
-        print('No filter: %s' % ('yes' if args.filter else 'no'))
-        print('IP Address: %s' % args.address)
-        print('')
-        print(stamp)
+        parameter = dnsstamps.prepare_plain(args.address, options)
+        dnsstamps.format(parameter)
 
     def dnscrypt(self):
         parser = argparse.ArgumentParser(description='Create DNSCrypt stamp')
@@ -90,19 +94,8 @@ class DnsStampCli(object):
             options.append(Option.NO_LOGS)
         if args.filter:
             options.append(Option.NO_FILTERS)
-        stamp = dnsstamps.create_dnscrypt(args.address, args.public_key, args.provider_name, options)
-
-        print('DNSCrypt DNS stamp')
-        print('==================')
-        print('')
-        print('DNSSEC: %s' % ('yes' if args.dnssec else 'no'))
-        print('No logs: %s' % ('yes' if args.logs else 'no'))
-        print('No filter: %s' % ('yes' if args.filter else 'no'))
-        print('IP Address: %s' % args.address)
-        print('Public key: %s' % args.public_key)
-        print('Provider name: %s' % args.provider_name)
-        print('')
-        print(stamp)
+        parameter = dnsstamps.prepare_dnscrypt(args.address, args.public_key, args.provider_name, options)
+        dnsstamps.format(parameter)
 
     def doh(self):
         parser = argparse.ArgumentParser(description='Create DNS over HTTPS stamp')
@@ -133,22 +126,9 @@ class DnsStampCli(object):
             options.append(Option.NO_LOGS)
         if args.filter:
             options.append(Option.NO_FILTERS)
-        stamp = dnsstamps.create_doh(args.address, args.hashes.split(','), args.hostname, args.path, options,
-                                     [] if args.bootstrap_ips is None else args.bootstrap_ips.split(','))
-
-        print('DoH DNS stamp')
-        print('=============')
-        print('')
-        print('DNSSEC: %s' % ('yes' if args.dnssec else 'no'))
-        print('No logs: %s' % ('yes' if args.logs else 'no'))
-        print('No filter: %s' % ('yes' if args.filter else 'no'))
-        print('IP Address: %s' % args.address)
-        print('Hashes: %s' % args.hashes)
-        print('Hostname: %s' % args.hostname)
-        print('Path: %s' % args.path)
-        print('Bootstrap IPs: %s' % args.bootstrap_ips)
-        print('')
-        print(stamp)
+        parameter = dnsstamps.prepare_doh(args.address, args.hashes.split(','), args.hostname, args.path, options,
+                                          [] if args.bootstrap_ips is None else args.bootstrap_ips.split(','))
+        dnsstamps.format(parameter)
 
     def dot(self):
         parser = argparse.ArgumentParser(description='Create DNS over TLS stamp')
@@ -175,21 +155,9 @@ class DnsStampCli(object):
             options.append(Option.NO_LOGS)
         if args.filter:
             options.append(Option.NO_FILTERS)
-        stamp = dnsstamps.create_dot(args.address, args.hashes.split(','), args.hostname, options,
-                                     [] if args.bootstrap_ips is None else args.bootstrap_ips.split(','))
-
-        print('DoT DNS stamp')
-        print('=============')
-        print('')
-        print('DNSSEC: %s' % ('yes' if args.dnssec else 'no'))
-        print('No logs: %s' % ('yes' if args.logs else 'no'))
-        print('No filter: %s' % ('yes' if args.filter else 'no'))
-        print('IP Address: %s' % args.address)
-        print('Hostname: %s' % args.hostname)
-        print('Hashes: %s' % args.hashes)
-        print('Bootstrap IPs: %s' % args.bootstrap_ips)
-        print('')
-        print(stamp)
+        parameter = dnsstamps.prepare_dot(args.address, args.hashes.split(','), args.hostname, options,
+                                          [] if args.bootstrap_ips is None else args.bootstrap_ips.split(','))
+        dnsstamps.format(parameter)
 
 
 if __name__ == '__main__':

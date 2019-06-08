@@ -94,6 +94,20 @@ Then run
     sdns://AwEAAAAAAAAACTEyNy4wLjAuMSAvGvUApm1Lg3YHZuQcsRI-vWuVhTr67zvN85y946swtg9kb3QuZXhhbXBsZS5jb20
 
 
+## Parsing DNS stamps
+
+    $ dnsstamp.py parse sdns://AAEAAAAAAAAACTEyNy4wLjAuMQ
+    Plain DNS stamp
+    ===============
+    
+    DNSSEC: yes
+    No logs: no
+    No filter: no
+    IP Address: 127.0.0.1
+    
+    sdns://AAEAAAAAAAAACTEyNy4wLjAuMQ
+
+
 ## Using the library
     
     import dnsstamps
@@ -110,17 +124,21 @@ Then run
     
     # DNS over TLS
     stamp = dnsstamps.create_dot("127.0.0.1", ["tbs-certificate-hash"], "hostname", [Option.NO_FILTERS])
+    
+    # Parse
+    parameter = dnsstamps.parse("sdns://AAEAAAAAAAAACTEyNy4wLjAuMQ")
+    dnstamps.format(parameter)
+
+
+## Running tests
+
+    python3 -m unittest discover
 
 
 ## Setting up your own DNS server
 
 * [Unbound](https://github.com/jedisct1/dnscrypt-proxy/wiki/How-to-setup-your-own-DNSCrypt-server-in-less-than-10-minutes) (DNSSEC, DNSCrypt)
 * [PowerDNS](https://github.com/chrisss404/powerdns#private-recursor) (DNSSEC, DNSCrypt, DoH, DoT, Authoritative Server)
-
-
-## Running tests
-
-    python3 -m unittest discover
 
 
 ## Updating PyPI package
