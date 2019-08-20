@@ -87,7 +87,7 @@ class TestParser(unittest.TestCase):
 
     def test_parse_doh_stamp_with_multiple_hashes(self):
         parameter = dnsstamps.parse(
-            "sdns://AgAAAAAAAAAACTEyNy4wLjAuMSA-GhoPbFPz6XpJLVcIS1uYBwWe4FerFQWHb9g_2j24OCDQskN3amwQ5EhbNOo-OzoGPzCJdw4Ep4yAh7fEnU-Y1g9kb2guZXhhbXBsZS5jb20KL2Rucy1xdWVyeQ")
+            "sdns://AgAAAAAAAAAACTEyNy4wLjAuMaA-GhoPbFPz6XpJLVcIS1uYBwWe4FerFQWHb9g_2j24OCDQskN3amwQ5EhbNOo-OzoGPzCJdw4Ep4yAh7fEnU-Y1g9kb2guZXhhbXBsZS5jb20KL2Rucy1xdWVyeQ")
 
         self.assertEqual(Protocol.DOH, parameter.protocol, "Invalid protocol")
         self.assertEqual([], parameter.options, "Invalid options")
@@ -149,7 +149,7 @@ class TestParser(unittest.TestCase):
 
     def test_parse_dot_stamp_with_multiple_hashes(self):
         parameter = dnsstamps.parse(
-            "sdns://AwAAAAAAAAAACTEyNy4wLjAuMSA-GhoPbFPz6XpJLVcIS1uYBwWe4FerFQWHb9g_2j24OCDQskN3amwQ5EhbNOo-OzoGPzCJdw4Ep4yAh7fEnU-Y1g9kb3QuZXhhbXBsZS5jb20")
+            "sdns://AwAAAAAAAAAACTEyNy4wLjAuMaA-GhoPbFPz6XpJLVcIS1uYBwWe4FerFQWHb9g_2j24OCDQskN3amwQ5EhbNOo-OzoGPzCJdw4Ep4yAh7fEnU-Y1g9kb3QuZXhhbXBsZS5jb20")
 
         self.assertEqual(Protocol.DOT, parameter.protocol, "Invalid protocol")
         self.assertEqual([], parameter.options, "Invalid options")

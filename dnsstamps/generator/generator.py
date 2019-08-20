@@ -24,15 +24,40 @@ def pack_options(options):
     return struct.pack("<Q", props)
 
 
-def pack_text(text):
-    return struct.pack("<B", len(text)) + text.encode('utf-8')
+def pack_text_array(array):
+    result = b''
+    last_item = len(array) - 1
+    for i, text in enumerate(array):
+        result += pack_text(text, i != last_item)
+    return result
 
 
-def pack_raw(raw):
+def pack_text(text, set_high_bit=False):
+    length = len(text)
+    if set_high_bit:
+        length |= (1 << 7)
+
+    return struct.pack("<B", length) + text.encode('utf-8')
+
+
+def pack_raw_array(array):
+    result = b''
+    last_item = len(array) - 1
+    for i, raw in enumerate(array):
+        result += pack_raw(raw, i != last_item)
+    return result
+
+
+def pack_raw(raw, set_high_bit=False):
     if isinstance(raw, str):
         raw = raw.replace(":", "").strip()
     binary = binascii.unhexlify(raw)
-    return struct.pack("<B", len(binary)) + binary
+
+    length = len(binary)
+    if set_high_bit:
+        length |= (1 << 7)
+
+    return struct.pack("<B", length) + binary
 
 
 def create_stamp(payload):
@@ -65,10 +90,10 @@ def build_doh(parameter):
         pack_protocol(parameter.protocol) +
         pack_options(parameter.options) +
         pack_text(parameter.address) +
-        b''.join(map(pack_raw, parameter.hashes)) +
+        pack_raw_array(parameter.hashes) +
         pack_text(parameter.hostname) +
         pack_text(parameter.path) +
-        b''.join(map(pack_text, parameter.bootstrap_ips))
+        pack_text_array(parameter.bootstrap_ips)
     )
 
 
@@ -80,9 +105,9 @@ def build_dot(parameter):
         pack_protocol(parameter.protocol) +
         pack_options(parameter.options) +
         pack_text(parameter.address) +
-        b''.join(map(pack_raw, parameter.hashes)) +
+        pack_raw_array(parameter.hashes) +
         pack_text(parameter.hostname) +
-        b''.join(map(pack_text, parameter.bootstrap_ips))
+        pack_text_array(parameter.bootstrap_ips)
     )
 
 

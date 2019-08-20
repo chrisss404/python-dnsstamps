@@ -74,6 +74,9 @@ def consume_raw(state):
             state.data = state.data[1:]
             return None
 
+        # unset high bit
+        length &= ~(1 << 7)
+
         bytes = state.data[1:length + 1]
         try:
             bytes.decode('utf-8')
@@ -87,7 +90,12 @@ def consume_raw(state):
 
 def consume_raw_array(state):
     items = []
-    while len(state.data) > 0:
+
+    done = False
+    while not done:
+        length = struct.unpack('<B', state.data[:1])[0]
+        done = not (length & (1 << 7))
+
         item = consume_raw(state)
         if item is None:
             break

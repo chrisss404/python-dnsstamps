@@ -88,7 +88,7 @@ class TestGenerator(unittest.TestCase):
         path = "/dns-query"
 
         self.assertEqual(
-            "sdns://AgAAAAAAAAAACTEyNy4wLjAuMSA-GhoPbFPz6XpJLVcIS1uYBwWe4FerFQWHb9g_2j24OCDQskN3amwQ5EhbNOo-OzoGPzCJdw4Ep4yAh7fEnU-Y1g9kb2guZXhhbXBsZS5jb20KL2Rucy1xdWVyeQ",
+            "sdns://AgAAAAAAAAAACTEyNy4wLjAuMaA-GhoPbFPz6XpJLVcIS1uYBwWe4FerFQWHb9g_2j24OCDQskN3amwQ5EhbNOo-OzoGPzCJdw4Ep4yAh7fEnU-Y1g9kb2guZXhhbXBsZS5jb20KL2Rucy1xdWVyeQ",
             dnsstamps.create_doh(address, hashes, hostname, path),
             "Invalid stamp")
 
@@ -144,7 +144,7 @@ class TestGenerator(unittest.TestCase):
         hostname = "dot.example.com"
 
         self.assertEqual(
-            "sdns://AwAAAAAAAAAACTEyNy4wLjAuMSA-GhoPbFPz6XpJLVcIS1uYBwWe4FerFQWHb9g_2j24OCDQskN3amwQ5EhbNOo-OzoGPzCJdw4Ep4yAh7fEnU-Y1g9kb3QuZXhhbXBsZS5jb20",
+            "sdns://AwAAAAAAAAAACTEyNy4wLjAuMaA-GhoPbFPz6XpJLVcIS1uYBwWe4FerFQWHb9g_2j24OCDQskN3amwQ5EhbNOo-OzoGPzCJdw4Ep4yAh7fEnU-Y1g9kb3QuZXhhbXBsZS5jb20",
             dnsstamps.create_dot(address, hashes, hostname),
             "Invalid stamp")
 
