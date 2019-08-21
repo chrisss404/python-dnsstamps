@@ -46,9 +46,24 @@ def consume_options(state):
         raise Exception('Unable to consume options', e)
 
 
+def is_next_bytes_high_bit_set(state):
+    byte = struct.unpack('<B', state.data[:1])[0]
+    return byte & (1 << 7)
+
+
+def unpack_len(state):
+    length = struct.unpack('<B', state.data[:1])[0]
+    return length & ~(1 << 7)
+
+
 def consume_text(state):
     try:
-        length = struct.unpack('<B', state.data[:1])[0]
+        length = unpack_len(state)
+
+        if length == 0:
+            state.data = state.data[1:]
+            return ""
+
         text = state.data[1:length + 1].decode('utf-8')
         state.data = state.data[length + 1:]
         return text
@@ -58,7 +73,10 @@ def consume_text(state):
 
 def consume_text_array(state):
     items = []
-    while len(state.data) > 0:
+
+    done = len(state.data) == 0
+    while not done:
+        done = not is_next_bytes_high_bit_set(state)
         item = consume_text(state)
         if item is None:
             break
@@ -68,14 +86,11 @@ def consume_text_array(state):
 
 def consume_raw(state):
     try:
-        length = struct.unpack('<B', state.data[:1])[0]
+        length = unpack_len(state)
 
         if length == 0:
             state.data = state.data[1:]
             return None
-
-        # unset high bit
-        length &= ~(1 << 7)
 
         bytes = state.data[1:length + 1]
         try:
@@ -91,11 +106,9 @@ def consume_raw(state):
 def consume_raw_array(state):
     items = []
 
-    done = False
+    done = len(state.data) == 0
     while not done:
-        length = struct.unpack('<B', state.data[:1])[0]
-        done = not (length & (1 << 7))
-
+        done = not is_next_bytes_high_bit_set(state)
         item = consume_raw(state)
         if item is None:
             break
