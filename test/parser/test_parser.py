@@ -181,3 +181,9 @@ class TestParser(unittest.TestCase):
         self.assertEqual([], parameter.hashes, "Invalid hashes")
         self.assertEqual("dot.example.com", parameter.hostname, "Invalid hostname")
         self.assertEqual([], parameter.bootstrap_ips, "Invalid bootstrap_ips")
+
+    def test_parse_dnscrypt_relay_stamp(self):
+        parameter = dnsstamps.parse("sdns://BAwxMjcuMC4wLjE6NTM")
+
+        self.assertEqual(Protocol.DNSCRYPT_RELAY, parameter.protocol, "Invalid protocol")
+        self.assertEqual("127.0.0.1:53", parameter.address, "Invalid address")

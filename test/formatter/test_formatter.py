@@ -39,3 +39,8 @@ class TestPrinter(unittest.TestCase):
         hostname = "doh.example.com"
         parameter = dnsstamps.prepare_dot(address, hashes, hostname)
         dnsstamps.format(parameter)
+
+    def test_format_dnscrypt_relay_stamp(self):
+        address = "[fe80::6d6d:f72c:3ad:60b8]"
+        parameter = dnsstamps.prepare_dnscrypt_relay(address)
+        dnsstamps.format(parameter)

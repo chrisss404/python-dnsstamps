@@ -111,6 +111,13 @@ def build_dot(parameter):
     )
 
 
+def build_dnscrypt_relay(parameter):
+    return create_stamp(
+        pack_protocol(parameter.protocol) +
+        pack_text(parameter.address)
+    )
+
+
 def build(parameter):
     if not isinstance(parameter, Parameter):
         raise ValueError('Invalid parameter type %s' % type(parameter))
@@ -123,6 +130,8 @@ def build(parameter):
         return build_doh(parameter)
     elif parameter.protocol == Protocol.DOT:
         return build_dot(parameter)
+    elif parameter.protocol == Protocol.DNSCRYPT_RELAY:
+        return build_dnscrypt_relay(parameter)
 
 
 def prepare_plain(address, options=None):
@@ -196,6 +205,13 @@ def prepare_dot(address, hashes, hostname, options=None, bootstrap_ips=None):
     return parameter
 
 
+def prepare_dnscrypt_relay(address):
+    parameter = Parameter()
+    parameter.protocol = Protocol.DNSCRYPT_RELAY
+    parameter.address = address
+    return parameter
+
+
 def create_plain(address, options=None):
     return build(prepare_plain(address, options))
 
@@ -210,3 +226,7 @@ def create_doh(address, hashes, hostname, path, options=None, bootstrap_ips=None
 
 def create_dot(address, hashes, hostname, options=None, bootstrap_ips=None):
     return build(prepare_dot(address, hashes, hostname, options, bootstrap_ips))
+
+
+def create_dnscrypt_relay(address):
+    return build(prepare_dnscrypt_relay(address))

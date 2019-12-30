@@ -145,6 +145,10 @@ def parse_dot(state, parameter):
     parameter.bootstrap_ips = consume_text_array(state)
 
 
+def parse_dnscrypt_relay(state, parameter):
+    parameter.address = consume_text(state)
+
+
 def parse(stamp):
     parameter = Parameter()
 
@@ -159,5 +163,7 @@ def parse(stamp):
         parse_doh(state, parameter)
     elif parameter.protocol == Protocol.DOT:
         parse_dot(state, parameter)
+    elif parameter.protocol == Protocol.DNSCRYPT_RELAY:
+        parse_dnscrypt_relay(state, parameter)
 
     return parameter
