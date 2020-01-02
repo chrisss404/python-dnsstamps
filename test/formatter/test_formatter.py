@@ -41,6 +41,6 @@ class TestPrinter(unittest.TestCase):
         dnsstamps.format(parameter)
 
     def test_format_dnscrypt_relay_stamp(self):
-        address = "[fe80::6d6d:f72c:3ad:60b8]"
+        address = "[fe80::6d6d:f72c:3ad:60b8]:433"
         parameter = dnsstamps.prepare_dnscrypt_relay(address)
         dnsstamps.format(parameter)

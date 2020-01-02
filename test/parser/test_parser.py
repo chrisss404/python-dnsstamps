@@ -183,7 +183,7 @@ class TestParser(unittest.TestCase):
         self.assertEqual([], parameter.bootstrap_ips, "Invalid bootstrap_ips")
 
     def test_parse_dnscrypt_relay_stamp(self):
-        parameter = dnsstamps.parse("sdns://BAwxMjcuMC4wLjE6NTM")
+        parameter = dnsstamps.parse("sdns://gQ0xMjcuMC4wLjE6NDQz")
 
         self.assertEqual(Protocol.DNSCRYPT_RELAY, parameter.protocol, "Invalid protocol")
-        self.assertEqual("127.0.0.1:53", parameter.address, "Invalid address")
+        self.assertEqual("127.0.0.1:443", parameter.address, "Invalid address")
