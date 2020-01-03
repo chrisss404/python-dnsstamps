@@ -93,6 +93,16 @@ Then run
     
     sdns://AwEAAAAAAAAACTEyNy4wLjAuMSAvGvUApm1Lg3YHZuQcsRI-vWuVhTr67zvN85y946swtg9kb3QuZXhhbXBsZS5jb20
 
+### Anonymized DNSCrypt relay
+
+    $ dnsstamp.py relay -a 127.0.0.1
+    DNSCrypt DNS Relay Stamp
+    ========================
+    
+    IP Address: 127.0.0.1
+    
+    sdns://gQkxMjcuMC4wLjE
+
 
 ## Parsing DNS stamps
 
@@ -123,7 +133,10 @@ Then run
     stamp = dnsstamps.create_doh("127.0.0.1", ["3e1a1a0f"], "hostname", "path", [Option.NO_LOGS])
     
     # DNS over TLS
-    stamp = dnsstamps.create_dot("127.0.0.1", ["d0b24377"], "hostname", [Option.NO_FILTERS])
+    stamp = dnsstamps.create_dot("127.0.0.1", ["d0b24377"], "hostname", [Option.NO_FILTERS])    
+
+    # Anonymized DNSCrypt relay
+    stamp = dnsstamps.create_dnscrypt_relay("127.0.0.1")
     
     # Parse
     parameter = dnsstamps.parse("sdns://AAEAAAAAAAAACTEyNy4wLjAuMQ")

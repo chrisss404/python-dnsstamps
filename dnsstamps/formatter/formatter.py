@@ -63,7 +63,7 @@ def print_dot(parameter):
 
 def print_dnscrypt_relay(parameter):
     print('DNSCrypt DNS Relay Stamp')
-    print('=============')
+    print('========================')
     print('')
     print('IP Address: %s' % parameter.address)
     print('')

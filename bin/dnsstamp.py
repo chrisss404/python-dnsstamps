@@ -36,7 +36,7 @@ class DnsStampCli(object):
     def __init__(self):
         parser = argparse.ArgumentParser(usage='%(prog)s <command> [<args>]')
         parser.add_argument('command',
-                            choices=['parse', 'plain', 'dnscrypt', 'doh', 'dot'],
+                            choices=['parse', 'plain', 'dnscrypt', 'doh', 'dot', 'relay'],
                             help='The command to execute.')
 
         args = parser.parse_args(sys.argv[1:2])
@@ -158,6 +158,15 @@ class DnsStampCli(object):
         parameter = dnsstamps.prepare_dot("" if args.address is None else args.address,
                                           [] if args.hashes is None else args.hashes.split(','), args.hostname, options,
                                           [] if args.bootstrap_ips is None else args.bootstrap_ips.split(','))
+        dnsstamps.format(parameter)
+
+    def relay(self):
+        parser = argparse.ArgumentParser(description='Create DNSCrypt relay stamp')
+        self.append_common_arguments(parser)
+
+        args = parser.parse_args(sys.argv[2:])
+
+        parameter = dnsstamps.prepare_dnscrypt_relay("" if args.address is None else args.address)
         dnsstamps.format(parameter)
 
 
