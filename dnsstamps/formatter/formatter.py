@@ -61,6 +61,15 @@ def print_dot(parameter):
     print(build(parameter))
 
 
+def print_dnscrypt_relay(parameter):
+    print('DNSCrypt DNS Relay Stamp')
+    print('=============')
+    print('')
+    print('IP Address: %s' % parameter.address)
+    print('')
+    print(build(parameter))
+
+
 def format(parameter):
     if not isinstance(parameter, Parameter):
         raise ValueError('Invalid parameter type %s' % type(parameter))
@@ -73,3 +82,5 @@ def format(parameter):
         return print_doh(parameter)
     elif parameter.protocol == Protocol.DOT:
         return print_dot(parameter)
+    elif parameter.protocol == Protocol.DNSCRYPT_RELAY:
+        return print_dnscrypt_relay(parameter)

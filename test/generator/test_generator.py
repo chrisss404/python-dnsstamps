@@ -169,3 +169,10 @@ class TestGenerator(unittest.TestCase):
             "sdns://AwUAAAAAAAAAAAAPZG90LmV4YW1wbGUuY29t",
             dnsstamps.create_dot(address, hashes, hostname, options),
             "Invalid stamp")
+
+    def test_generate_dnscrypt_relay_stamp(self):
+        address = "127.0.0.1:443"
+        self.assertEqual(
+            "sdns://gQ0xMjcuMC4wLjE6NDQz",
+            dnsstamps.create_dnscrypt_relay(address),
+            "Invalid stamp")
