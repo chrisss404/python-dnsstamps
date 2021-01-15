@@ -36,7 +36,8 @@ class DnsStampCli(object):
     def __init__(self):
         parser = argparse.ArgumentParser(usage='%(prog)s <command> [<args>]')
         parser.add_argument('command',
-                            choices=['parse', 'plain', 'dnscrypt', 'doh', 'dot', 'relay'],
+                            choices=['parse', 'plain', 'dnscrypt', 'doh', 'dot', 'doq', 'doh_target', 'dnscrypt_relay',
+                                     'doh_relay'],
                             help='The command to execute.')
 
         args = parser.parse_args(sys.argv[1:2])
@@ -98,7 +99,7 @@ class DnsStampCli(object):
         dnsstamps.format(parameter)
 
     def doh(self):
-        parser = argparse.ArgumentParser(description='Create DNS over HTTPS stamp')
+        parser = argparse.ArgumentParser(description='Create DNS-over-HTTPS stamp')
         self.append_common_arguments(parser)
 
         parser.add_argument('-t', '--hashes',
@@ -132,7 +133,7 @@ class DnsStampCli(object):
         dnsstamps.format(parameter)
 
     def dot(self):
-        parser = argparse.ArgumentParser(description='Create DNS over TLS stamp')
+        parser = argparse.ArgumentParser(description='Create DNS-over-TLS stamp')
         self.append_common_arguments(parser)
 
         parser.add_argument('-t', '--hashes',
@@ -160,13 +161,101 @@ class DnsStampCli(object):
                                           [] if args.bootstrap_ips is None else args.bootstrap_ips.split(','))
         dnsstamps.format(parameter)
 
-    def relay(self):
+    def doq(self):
+        parser = argparse.ArgumentParser(description='Create DNS-over-QUIC stamp')
+        self.append_common_arguments(parser)
+
+        parser.add_argument('-t', '--hashes',
+                            type=str,
+                            help="a comma-separated list of tbs certificate hashes (e.g.: 3e1a1a0f6c53f3e97a492d57084b5b9807059ee057ab1505876fd83fda3db838)")
+        parser.add_argument('-n', '--hostname',
+                            required=True,
+                            type=str,
+                            help="the server hostname which will also be used as a SNI name (e.g.: doq.example.com)")
+        parser.add_argument('-b', '--bootstrap_ips',
+                            type=str,
+                            help="a comma-separated list of bootstrap ips (e.g.: 1.1.1.1,1.0.0.1)")
+
+        args = parser.parse_args(sys.argv[2:])
+
+        options = []
+        if args.dnssec:
+            options.append(Option.DNSSEC)
+        if args.logs:
+            options.append(Option.NO_LOGS)
+        if args.filter:
+            options.append(Option.NO_FILTERS)
+        parameter = dnsstamps.prepare_doq("" if args.address is None else args.address,
+                                          [] if args.hashes is None else args.hashes.split(','), args.hostname, options,
+                                          [] if args.bootstrap_ips is None else args.bootstrap_ips.split(','))
+        dnsstamps.format(parameter)
+
+    def doh_target(self):
+        parser = argparse.ArgumentParser(description='Create DoH target stamp')
+        self.append_common_arguments(parser)
+
+        parser.add_argument('-n', '--hostname',
+                            required=True,
+                            type=str,
+                            help="the server hostname which will also be used as a SNI name (e.g.: doh-target.example.com)")
+        parser.add_argument('-p', '--path',
+                            required=True,
+                            type=str,
+                            help="the absolute URI path (e.g.: /dns-query)")
+
+        args = parser.parse_args(sys.argv[2:])
+
+        options = []
+        if args.dnssec:
+            options.append(Option.DNSSEC)
+        if args.logs:
+            options.append(Option.NO_LOGS)
+        if args.filter:
+            options.append(Option.NO_FILTERS)
+        parameter = dnsstamps.prepare_doh_target(args.hostname, args.path, options)
+        dnsstamps.format(parameter)
+
+    def dnscrypt_relay(self):
         parser = argparse.ArgumentParser(description='Create DNSCrypt relay stamp')
         self.append_common_arguments(parser)
 
         args = parser.parse_args(sys.argv[2:])
 
         parameter = dnsstamps.prepare_dnscrypt_relay("" if args.address is None else args.address)
+        dnsstamps.format(parameter)
+
+    def doh_relay(self):
+        parser = argparse.ArgumentParser(description='Create DoH relay stamp')
+        self.append_common_arguments(parser)
+
+        parser.add_argument('-t', '--hashes',
+                            type=str,
+                            help="a comma-separated list of tbs certificate hashes (e.g.: 3e1a1a0f6c53f3e97a492d57084b5b9807059ee057ab1505876fd83fda3db838)")
+        parser.add_argument('-n', '--hostname',
+                            required=True,
+                            type=str,
+                            help="the server hostname which will also be used as a SNI name (e.g.: doh-relay.example.com)")
+        parser.add_argument('-p', '--path',
+                            required=True,
+                            type=str,
+                            help="the absolute URI path (e.g.: /dns-query)")
+        parser.add_argument('-b', '--bootstrap_ips',
+                            type=str,
+                            help="a comma-separated list of bootstrap ips (e.g.: 1.1.1.1,1.0.0.1)")
+
+        args = parser.parse_args(sys.argv[2:])
+
+        options = []
+        if args.dnssec:
+            options.append(Option.DNSSEC)
+        if args.logs:
+            options.append(Option.NO_LOGS)
+        if args.filter:
+            options.append(Option.NO_FILTERS)
+        parameter = dnsstamps.prepare_doh_relay("" if args.address is None else args.address,
+                                                [] if args.hashes is None else args.hashes.split(','), args.hostname,
+                                                args.path, options,
+                                                [] if args.bootstrap_ips is None else args.bootstrap_ips.split(','))
         dnsstamps.format(parameter)
 
 

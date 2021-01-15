@@ -182,8 +182,147 @@ class TestParser(unittest.TestCase):
         self.assertEqual("dot.example.com", parameter.hostname, "Invalid hostname")
         self.assertEqual([], parameter.bootstrap_ips, "Invalid bootstrap_ips")
 
+    def test_parse_doq_stamp(self):
+        parameter = dnsstamps.parse(
+            "sdns://BAAAAAAAAAAAGltmZTgwOjo2ZDZkOmY3MmM6M2FkOjYwYjhdID4aGg9sU_PpekktVwhLW5gHBZ7gV6sVBYdv2D_aPbg4D2RvcS5leGFtcGxlLmNvbQ")
+
+        self.assertEqual(Protocol.DOQ, parameter.protocol, "Invalid protocol")
+        self.assertEqual([], parameter.options, "Invalid options")
+        self.assertEqual("[fe80::6d6d:f72c:3ad:60b8]", parameter.address, "Invalid address")
+        self.assertEqual([b"3e1a1a0f6c53f3e97a492d57084b5b9807059ee057ab1505876fd83fda3db838"], parameter.hashes,
+                         "Invalid hashes")
+        self.assertEqual("doq.example.com", parameter.hostname, "Invalid hostname")
+        self.assertEqual([], parameter.bootstrap_ips, "Invalid bootstrap_ips")
+
+    def test_parse_doq_stamp_with_options(self):
+        parameter = dnsstamps.parse(
+            "sdns://BAEAAAAAAAAACTEyNy4wLjAuMSA-GhoPbFPz6XpJLVcIS1uYBwWe4FerFQWHb9g_2j24OA9kb3EuZXhhbXBsZS5jb20")
+
+        self.assertEqual(Protocol.DOQ, parameter.protocol, "Invalid protocol")
+        self.assertEqual([Option.DNSSEC], parameter.options, "Invalid options")
+        self.assertEqual("127.0.0.1", parameter.address, "Invalid address")
+        self.assertEqual([b"3e1a1a0f6c53f3e97a492d57084b5b9807059ee057ab1505876fd83fda3db838"], parameter.hashes,
+                         "Invalid hashes")
+        self.assertEqual("doq.example.com", parameter.hostname, "Invalid hostname")
+        self.assertEqual([], parameter.bootstrap_ips, "Invalid bootstrap_ips")
+
+    def test_parse_doq_stamp_with_multiple_hashes(self):
+        parameter = dnsstamps.parse(
+            "sdns://BAAAAAAAAAAACTEyNy4wLjAuMaA-GhoPbFPz6XpJLVcIS1uYBwWe4FerFQWHb9g_2j24OCDQskN3amwQ5EhbNOo-OzoGPzCJdw4Ep4yAh7fEnU-Y1g9kb3EuZXhhbXBsZS5jb20")
+
+        self.assertEqual(Protocol.DOQ, parameter.protocol, "Invalid protocol")
+        self.assertEqual([], parameter.options, "Invalid options")
+        self.assertEqual("127.0.0.1", parameter.address, "Invalid address")
+        self.assertEqual([b"3e1a1a0f6c53f3e97a492d57084b5b9807059ee057ab1505876fd83fda3db838",
+                          b"d0b243776a6c10e4485b34ea3e3b3a063f3089770e04a78c8087b7c49d4f98d6"], parameter.hashes,
+                         "Invalid hashes")
+        self.assertEqual("doq.example.com", parameter.hostname, "Invalid hostname")
+        self.assertEqual([], parameter.bootstrap_ips, "Invalid bootstrap_ips")
+
+    def test_parse_doq_stamp_with_bootstrap_ips(self):
+        parameter = dnsstamps.parse(
+            "sdns://BAAAAAAAAAAACTEyNy4wLjAuMSA-GhoPbFPz6XpJLVcIS1uYBwWe4FerFQWHb9g_2j24OA9kb3EuZXhhbXBsZS5jb20HMS4xLjEuMQ")
+
+        self.assertEqual(Protocol.DOQ, parameter.protocol, "Invalid protocol")
+        self.assertEqual([], parameter.options, "Invalid options")
+        self.assertEqual("127.0.0.1", parameter.address, "Invalid address")
+        self.assertEqual([b"3e1a1a0f6c53f3e97a492d57084b5b9807059ee057ab1505876fd83fda3db838"], parameter.hashes,
+                         "Invalid hashes")
+        self.assertEqual("doq.example.com", parameter.hostname, "Invalid hostname")
+        self.assertEqual(["1.1.1.1"], parameter.bootstrap_ips, "Invalid bootstrap_ips")
+
+    def test_parse_doq_stamp_without_hashes(self):
+        parameter = dnsstamps.parse("sdns://BAUAAAAAAAAAAAAPZG9xLmV4YW1wbGUuY29t")
+
+        self.assertEqual(Protocol.DOQ, parameter.protocol, "Invalid protocol")
+        self.assertEqual([Option.DNSSEC, Option.NO_FILTERS], parameter.options, "Invalid options")
+        self.assertEqual("", parameter.address, "Invalid address")
+        self.assertEqual([], parameter.hashes, "Invalid hashes")
+        self.assertEqual("doq.example.com", parameter.hostname, "Invalid hostname")
+        self.assertEqual([], parameter.bootstrap_ips, "Invalid bootstrap_ips")
+
+    def test_parse_doh_target_stamp(self):
+        parameter = dnsstamps.parse("sdns://BQAAAAAAAAAAFmRvaC10YXJnZXQuZXhhbXBsZS5jb20KL2Rucy1xdWVyeQ")
+
+        self.assertEqual(Protocol.DOH_TARGET, parameter.protocol, "Invalid protocol")
+        self.assertEqual([], parameter.options, "Invalid options")
+        self.assertEqual("doh-target.example.com", parameter.hostname, "Invalid hostname")
+        self.assertEqual("/dns-query", parameter.path, "Invalid path")
+
+    def test_parse_doh_target_stamp_with_options(self):
+        parameter = dnsstamps.parse("sdns://BQYAAAAAAAAAFmRvaC10YXJnZXQuZXhhbXBsZS5jb20KL2Rucy1xdWVyeQ")
+
+        self.assertEqual(Protocol.DOH_TARGET, parameter.protocol, "Invalid protocol")
+        self.assertEqual([Option.NO_LOGS, Option.NO_FILTERS], parameter.options, "Invalid options")
+        self.assertEqual("doh-target.example.com", parameter.hostname, "Invalid hostname")
+        self.assertEqual("/dns-query", parameter.path, "Invalid path")
+
     def test_parse_dnscrypt_relay_stamp(self):
         parameter = dnsstamps.parse("sdns://gQ0xMjcuMC4wLjE6NDQz")
 
         self.assertEqual(Protocol.DNSCRYPT_RELAY, parameter.protocol, "Invalid protocol")
         self.assertEqual("127.0.0.1:443", parameter.address, "Invalid address")
+
+    def test_parse_doh_relay_stamp(self):
+        parameter = dnsstamps.parse(
+            "sdns://hQAAAAAAAAAAGltmZTgwOjo2ZDZkOmY3MmM6M2FkOjYwYjhdID4aGg9sU_PpekktVwhLW5gHBZ7gV6sVBYdv2D_aPbg4FWRvaC1yZWxheS5leGFtcGxlLmNvbQovZG5zLXF1ZXJ5")
+
+        self.assertEqual(Protocol.DOH_RELAY, parameter.protocol, "Invalid protocol")
+        self.assertEqual([], parameter.options, "Invalid options")
+        self.assertEqual("[fe80::6d6d:f72c:3ad:60b8]", parameter.address, "Invalid address")
+        self.assertEqual([b"3e1a1a0f6c53f3e97a492d57084b5b9807059ee057ab1505876fd83fda3db838"], parameter.hashes,
+                         "Invalid hashes")
+        self.assertEqual("doh-relay.example.com", parameter.hostname, "Invalid hostname")
+        self.assertEqual("/dns-query", parameter.path, "Invalid path")
+        self.assertEqual([], parameter.bootstrap_ips, "Invalid bootstrap_ips")
+
+    def test_parse_doh_relay_stamp_with_options(self):
+        parameter = dnsstamps.parse(
+            "sdns://hQIAAAAAAAAACTEyNy4wLjAuMSA-GhoPbFPz6XpJLVcIS1uYBwWe4FerFQWHb9g_2j24OBVkb2gtcmVsYXkuZXhhbXBsZS5jb20KL2Rucy1xdWVyeQ")
+
+        self.assertEqual(Protocol.DOH_RELAY, parameter.protocol, "Invalid protocol")
+        self.assertEqual([Option.NO_LOGS], parameter.options, "Invalid options")
+        self.assertEqual("127.0.0.1", parameter.address, "Invalid address")
+        self.assertEqual([b"3e1a1a0f6c53f3e97a492d57084b5b9807059ee057ab1505876fd83fda3db838"], parameter.hashes,
+                         "Invalid hashes")
+        self.assertEqual("doh-relay.example.com", parameter.hostname, "Invalid hostname")
+        self.assertEqual("/dns-query", parameter.path, "Invalid path")
+        self.assertEqual([], parameter.bootstrap_ips, "Invalid bootstrap_ips")
+
+    def test_parse_doh_relay_stamp_with_multiple_hashes(self):
+        parameter = dnsstamps.parse(
+            "sdns://hQAAAAAAAAAACTEyNy4wLjAuMaA-GhoPbFPz6XpJLVcIS1uYBwWe4FerFQWHb9g_2j24OCDQskN3amwQ5EhbNOo-OzoGPzCJdw4Ep4yAh7fEnU-Y1hVkb2gtcmVsYXkuZXhhbXBsZS5jb20KL2Rucy1xdWVyeQ")
+
+        self.assertEqual(Protocol.DOH_RELAY, parameter.protocol, "Invalid protocol")
+        self.assertEqual([], parameter.options, "Invalid options")
+        self.assertEqual("127.0.0.1", parameter.address, "Invalid address")
+        self.assertEqual([b"3e1a1a0f6c53f3e97a492d57084b5b9807059ee057ab1505876fd83fda3db838",
+                          b"d0b243776a6c10e4485b34ea3e3b3a063f3089770e04a78c8087b7c49d4f98d6"], parameter.hashes,
+                         "Invalid hashes")
+        self.assertEqual("doh-relay.example.com", parameter.hostname, "Invalid hostname")
+        self.assertEqual("/dns-query", parameter.path, "Invalid path")
+        self.assertEqual([], parameter.bootstrap_ips, "Invalid bootstrap_ips")
+
+    def test_parse_doh_relay_stamp_with_bootstrap_ips(self):
+        parameter = dnsstamps.parse(
+            "sdns://hQAAAAAAAAAACTEyNy4wLjAuMSA-GhoPbFPz6XpJLVcIS1uYBwWe4FerFQWHb9g_2j24OBVkb2gtcmVsYXkuZXhhbXBsZS5jb20KL2Rucy1xdWVyeQcxLjEuMS4x")
+
+        self.assertEqual(Protocol.DOH_RELAY, parameter.protocol, "Invalid protocol")
+        self.assertEqual([], parameter.options, "Invalid options")
+        self.assertEqual("127.0.0.1", parameter.address, "Invalid address")
+        self.assertEqual([b"3e1a1a0f6c53f3e97a492d57084b5b9807059ee057ab1505876fd83fda3db838"], parameter.hashes,
+                         "Invalid hashes")
+        self.assertEqual("doh-relay.example.com", parameter.hostname, "Invalid hostname")
+        self.assertEqual("/dns-query", parameter.path, "Invalid path")
+        self.assertEqual(["1.1.1.1"], parameter.bootstrap_ips, "Invalid bootstrap_ips")
+
+    def test_parse_doh_relay_stamp_without_hashes(self):
+        parameter = dnsstamps.parse("sdns://hQIAAAAAAAAAAAAVZG9oLXJlbGF5LmV4YW1wbGUuY29tCi9kbnMtcXVlcnk")
+
+        self.assertEqual(Protocol.DOH_RELAY, parameter.protocol, "Invalid protocol")
+        self.assertEqual([Option.NO_LOGS], parameter.options, "Invalid options")
+        self.assertEqual("", parameter.address, "Invalid address")
+        self.assertEqual([], parameter.hashes, "Invalid hashes")
+        self.assertEqual("doh-relay.example.com", parameter.hostname, "Invalid hostname")
+        self.assertEqual("/dns-query", parameter.path, "Invalid path")
+        self.assertEqual([], parameter.bootstrap_ips, "Invalid bootstrap_ips")

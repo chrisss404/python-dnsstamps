@@ -170,9 +170,141 @@ class TestGenerator(unittest.TestCase):
             dnsstamps.create_dot(address, hashes, hostname, options),
             "Invalid stamp")
 
+    def test_generate_doq_stamp(self):
+        address = "[fe80::6d6d:f72c:3ad:60b8]"
+        hashes = ["3e1a1a0f6c53f3e97a492d57084b5b9807059ee057ab1505876fd83fda3db838"]
+        hostname = "doq.example.com"
+
+        self.assertEqual(
+            "sdns://BAAAAAAAAAAAGltmZTgwOjo2ZDZkOmY3MmM6M2FkOjYwYjhdID4aGg9sU_PpekktVwhLW5gHBZ7gV6sVBYdv2D_aPbg4D2RvcS5leGFtcGxlLmNvbQ",
+            dnsstamps.create_doq(address, hashes, hostname),
+            "Invalid stamp")
+
+    def test_generate_doq_stamp_with_options(self):
+        address = "127.0.0.1"
+        hashes = ["3e1a1a0f6c53f3e97a492d57084b5b9807059ee057ab1505876fd83fda3db838"]
+        hostname = "doq.example.com"
+        options = [Option.DNSSEC]
+
+        self.assertEqual(
+            "sdns://BAEAAAAAAAAACTEyNy4wLjAuMSA-GhoPbFPz6XpJLVcIS1uYBwWe4FerFQWHb9g_2j24OA9kb3EuZXhhbXBsZS5jb20",
+            dnsstamps.create_doq(address, hashes, hostname, options),
+            "Invalid stamp")
+
+    def test_generate_doq_stamp_with_multiple_hashes(self):
+        address = "127.0.0.1"
+        hashes = ["3e1a1a0f6c53f3e97a492d57084b5b9807059ee057ab1505876fd83fda3db838",
+                  "d0b243776a6c10e4485b34ea3e3b3a063f3089770e04a78c8087b7c49d4f98d6"]
+        hostname = "doq.example.com"
+
+        self.assertEqual(
+            "sdns://BAAAAAAAAAAACTEyNy4wLjAuMaA-GhoPbFPz6XpJLVcIS1uYBwWe4FerFQWHb9g_2j24OCDQskN3amwQ5EhbNOo-OzoGPzCJdw4Ep4yAh7fEnU-Y1g9kb3EuZXhhbXBsZS5jb20",
+            dnsstamps.create_doq(address, hashes, hostname),
+            "Invalid stamp")
+
+    def test_generate_doq_stamp_with_bootstrap_ips(self):
+        address = "127.0.0.1"
+        hashes = ["3e1a1a0f6c53f3e97a492d57084b5b9807059ee057ab1505876fd83fda3db838"]
+        hostname = "doq.example.com"
+        bootstrap_ips = ["1.1.1.1"]
+
+        self.assertEqual(
+            "sdns://BAAAAAAAAAAACTEyNy4wLjAuMSA-GhoPbFPz6XpJLVcIS1uYBwWe4FerFQWHb9g_2j24OA9kb3EuZXhhbXBsZS5jb20HMS4xLjEuMQ",
+            dnsstamps.create_doq(address, hashes, hostname, bootstrap_ips=bootstrap_ips),
+            "Invalid stamp")
+
+    def test_generate_doq_stamp_without_hashes(self):
+        address = ""
+        hashes = []
+        hostname = "doq.example.com"
+        options = [Option.DNSSEC, Option.NO_FILTERS]
+
+        self.assertEqual(
+            "sdns://BAUAAAAAAAAAAAAPZG9xLmV4YW1wbGUuY29t",
+            dnsstamps.create_doq(address, hashes, hostname, options),
+            "Invalid stamp")
+
+    def test_generate_doh_target_stamp(self):
+        hostname = "doh-target.example.com"
+        path = "/dns-query"
+
+        self.assertEqual(
+            "sdns://BQAAAAAAAAAAFmRvaC10YXJnZXQuZXhhbXBsZS5jb20KL2Rucy1xdWVyeQ",
+            dnsstamps.create_doh_target(hostname, path),
+            "Invalid stamp")
+
+    def test_generate_doh_target_stamp_with_options(self):
+        hostname = "doh-target.example.com"
+        path = "/dns-query"
+        options = [Option.NO_LOGS, Option.NO_FILTERS]
+
+        self.assertEqual(
+            "sdns://BQYAAAAAAAAAFmRvaC10YXJnZXQuZXhhbXBsZS5jb20KL2Rucy1xdWVyeQ",
+            dnsstamps.create_doh_target(hostname, path, options),
+            "Invalid stamp")
+
     def test_generate_dnscrypt_relay_stamp(self):
         address = "127.0.0.1:443"
         self.assertEqual(
             "sdns://gQ0xMjcuMC4wLjE6NDQz",
             dnsstamps.create_dnscrypt_relay(address),
+            "Invalid stamp")
+
+    def test_generate_doh_relay_stamp(self):
+        address = "[fe80::6d6d:f72c:3ad:60b8]"
+        hashes = ["3e1a1a0f6c53f3e97a492d57084b5b9807059ee057ab1505876fd83fda3db838"]
+        hostname = "doh-relay.example.com"
+        path = "/dns-query"
+
+        self.assertEqual(
+            "sdns://hQAAAAAAAAAAGltmZTgwOjo2ZDZkOmY3MmM6M2FkOjYwYjhdID4aGg9sU_PpekktVwhLW5gHBZ7gV6sVBYdv2D_aPbg4FWRvaC1yZWxheS5leGFtcGxlLmNvbQovZG5zLXF1ZXJ5",
+            dnsstamps.create_doh_relay(address, hashes, hostname, path),
+            "Invalid stamp")
+
+    def test_generate_doh_relay_stamp_with_options(self):
+        address = "127.0.0.1"
+        hashes = ["3e1a1a0f6c53f3e97a492d57084b5b9807059ee057ab1505876fd83fda3db838"]
+        hostname = "doh-relay.example.com"
+        path = "/dns-query"
+        options = [Option.NO_LOGS]
+
+        self.assertEqual(
+            "sdns://hQIAAAAAAAAACTEyNy4wLjAuMSA-GhoPbFPz6XpJLVcIS1uYBwWe4FerFQWHb9g_2j24OBVkb2gtcmVsYXkuZXhhbXBsZS5jb20KL2Rucy1xdWVyeQ",
+            dnsstamps.create_doh_relay(address, hashes, hostname, path, options),
+            "Invalid stamp")
+
+    def test_generate_doh_relay_stamp_with_multiple_hashes(self):
+        address = "127.0.0.1"
+        hashes = ["3e1a1a0f6c53f3e97a492d57084b5b9807059ee057ab1505876fd83fda3db838",
+                  "d0b243776a6c10e4485b34ea3e3b3a063f3089770e04a78c8087b7c49d4f98d6"]
+        hostname = "doh-relay.example.com"
+        path = "/dns-query"
+
+        self.assertEqual(
+            "sdns://hQAAAAAAAAAACTEyNy4wLjAuMaA-GhoPbFPz6XpJLVcIS1uYBwWe4FerFQWHb9g_2j24OCDQskN3amwQ5EhbNOo-OzoGPzCJdw4Ep4yAh7fEnU-Y1hVkb2gtcmVsYXkuZXhhbXBsZS5jb20KL2Rucy1xdWVyeQ",
+            dnsstamps.create_doh_relay(address, hashes, hostname, path),
+            "Invalid stamp")
+
+    def test_generate_doh_relay_stamp_with_bootstrap_ips(self):
+        address = "127.0.0.1"
+        hashes = ["3e1a1a0f6c53f3e97a492d57084b5b9807059ee057ab1505876fd83fda3db838"]
+        hostname = "doh-relay.example.com"
+        path = "/dns-query"
+        bootstrap_ips = ["1.1.1.1"]
+
+        self.assertEqual(
+            "sdns://hQAAAAAAAAAACTEyNy4wLjAuMSA-GhoPbFPz6XpJLVcIS1uYBwWe4FerFQWHb9g_2j24OBVkb2gtcmVsYXkuZXhhbXBsZS5jb20KL2Rucy1xdWVyeQcxLjEuMS4x",
+            dnsstamps.create_doh_relay(address, hashes, hostname, path, bootstrap_ips=bootstrap_ips),
+            "Invalid stamp")
+
+    def test_generate_doh_relay_stamp_without_hashes(self):
+        address = ""
+        hashes = []
+        hostname = "doh-relay.example.com"
+        path = "/dns-query"
+        options = [Option.NO_LOGS]
+
+        self.assertEqual(
+            "sdns://hQIAAAAAAAAAAAAVZG9oLXJlbGF5LmV4YW1wbGUuY29tCi9kbnMtcXVlcnk",
+            dnsstamps.create_doh_relay(address, hashes, hostname, path, options),
             "Invalid stamp")

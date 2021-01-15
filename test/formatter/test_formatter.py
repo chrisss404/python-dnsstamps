@@ -36,11 +36,32 @@ class TestPrinter(unittest.TestCase):
     def test_format_dot_stamp(self):
         address = "[fe80::6d6d:f72c:3ad:60b8]"
         hashes = ["3e1a1a0f6c53f3e97a492d57084b5b9807059ee057ab1505876fd83fda3db838"]
-        hostname = "doh.example.com"
+        hostname = "dot.example.com"
         parameter = dnsstamps.prepare_dot(address, hashes, hostname)
+        dnsstamps.format(parameter)
+
+    def test_format_doq_stamp(self):
+        address = "[fe80::6d6d:f72c:3ad:60b8]"
+        hashes = ["3e1a1a0f6c53f3e97a492d57084b5b9807059ee057ab1505876fd83fda3db838"]
+        hostname = "doq.example.com"
+        parameter = dnsstamps.prepare_doq(address, hashes, hostname)
+        dnsstamps.format(parameter)
+
+    def test_format_doh_target_stamp(self):
+        hostname = "doh-target.example.com"
+        path = "/dns-query"
+        parameter = dnsstamps.prepare_doh_target(hostname, path)
         dnsstamps.format(parameter)
 
     def test_format_dnscrypt_relay_stamp(self):
         address = "[fe80::6d6d:f72c:3ad:60b8]:433"
         parameter = dnsstamps.prepare_dnscrypt_relay(address)
+        dnsstamps.format(parameter)
+
+    def test_format_doh_relay_stamp(self):
+        address = "[fe80::6d6d:f72c:3ad:60b8]"
+        hashes = ["3e1a1a0f6c53f3e97a492d57084b5b9807059ee057ab1505876fd83fda3db838"]
+        hostname = "doh-relay.example.com"
+        path = "/dns-query"
+        parameter = dnsstamps.prepare_doh_relay(address, hashes, hostname, path)
         dnsstamps.format(parameter)

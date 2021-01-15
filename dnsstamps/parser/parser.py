@@ -145,8 +145,31 @@ def parse_dot(state, parameter):
     parameter.bootstrap_ips = consume_text_array(state)
 
 
+def parse_doq(state, parameter):
+    parameter.options = consume_options(state)
+    parameter.address = consume_text(state)
+    parameter.hashes = consume_raw_array(state)
+    parameter.hostname = consume_text(state)
+    parameter.bootstrap_ips = consume_text_array(state)
+
+
+def parse_doh_target(state, parameter):
+    parameter.options = consume_options(state)
+    parameter.hostname = consume_text(state)
+    parameter.path = consume_text(state)
+
+
 def parse_dnscrypt_relay(state, parameter):
     parameter.address = consume_text(state)
+
+
+def parse_doh_relay(state, parameter):
+    parameter.options = consume_options(state)
+    parameter.address = consume_text(state)
+    parameter.hashes = consume_raw_array(state)
+    parameter.hostname = consume_text(state)
+    parameter.path = consume_text(state)
+    parameter.bootstrap_ips = consume_text_array(state)
 
 
 def parse(stamp):
@@ -163,7 +186,13 @@ def parse(stamp):
         parse_doh(state, parameter)
     elif parameter.protocol == Protocol.DOT:
         parse_dot(state, parameter)
+    elif parameter.protocol == Protocol.DOQ:
+        parse_doq(state, parameter)
+    elif parameter.protocol == Protocol.DOH_TARGET:
+        parse_doh_target(state, parameter)
     elif parameter.protocol == Protocol.DNSCRYPT_RELAY:
         parse_dnscrypt_relay(state, parameter)
+    elif parameter.protocol == Protocol.DOH_RELAY:
+        parse_doh_relay(state, parameter)
 
     return parameter

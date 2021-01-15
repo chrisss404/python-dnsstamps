@@ -6,4 +6,7 @@ class Protocol(Enum):
     DNSCRYPT = 1
     DOH = 2
     DOT = 3
+    DOQ = 4
+    DOH_TARGET = 5
     DNSCRYPT_RELAY = 129
+    DOH_RELAY = 133

@@ -61,11 +61,49 @@ def print_dot(parameter):
     print(build(parameter))
 
 
+def print_doq(parameter):
+    print('DoQ DNS stamp')
+    print('=============')
+    print('')
+    print_options(parameter)
+    print('IP Address: %s' % parameter.address)
+    print('Hostname: %s' % parameter.hostname)
+    print('Hashes: %s' % parameter.hashes)
+    print('Bootstrap IPs: %s' % parameter.bootstrap_ips)
+    print('')
+    print(build(parameter))
+
+
+def print_doh_target(parameter):
+    print('DoH Target DNS stamp')
+    print('====================')
+    print('')
+    print_options(parameter)
+    print('Hostname: %s' % parameter.hostname)
+    print('Path: %s' % parameter.path)
+    print('')
+    print(build(parameter))
+
+
 def print_dnscrypt_relay(parameter):
     print('DNSCrypt DNS Relay Stamp')
     print('========================')
     print('')
     print('IP Address: %s' % parameter.address)
+    print('')
+    print(build(parameter))
+
+
+def print_doh_relay(parameter):
+    print('DoH Relay DNS stamp')
+    print('===================')
+    print('')
+    print_options(parameter)
+    print('IP Address: %s' % parameter.address)
+    print('Hashes: %s' % parameter.hashes)
+    print('Hostname: %s' % parameter.hostname)
+    print('Path: %s' % parameter.path)
+    print('Bootstrap IPs: %s' % parameter.bootstrap_ips)
     print('')
     print(build(parameter))
 
@@ -82,5 +120,11 @@ def format(parameter):
         return print_doh(parameter)
     elif parameter.protocol == Protocol.DOT:
         return print_dot(parameter)
+    elif parameter.protocol == Protocol.DOQ:
+        return print_doq(parameter)
+    elif parameter.protocol == Protocol.DOH_TARGET:
+        return print_doh_target(parameter)
     elif parameter.protocol == Protocol.DNSCRYPT_RELAY:
         return print_dnscrypt_relay(parameter)
+    elif parameter.protocol == Protocol.DOH_RELAY:
+        return print_doh_relay(parameter)

@@ -111,10 +111,48 @@ def build_dot(parameter):
     )
 
 
+def build_doq(parameter):
+    if len(parameter.hashes) == 0:
+        parameter.hashes.append("")
+
+    return create_stamp(
+        pack_protocol(parameter.protocol) +
+        pack_options(parameter.options) +
+        pack_text(parameter.address) +
+        pack_raw_array(parameter.hashes) +
+        pack_text(parameter.hostname) +
+        pack_text_array(parameter.bootstrap_ips)
+    )
+
+
+def build_doh_target(parameter):
+    return create_stamp(
+        pack_protocol(parameter.protocol) +
+        pack_options(parameter.options) +
+        pack_text(parameter.hostname) +
+        pack_text(parameter.path)
+    )
+
+
 def build_dnscrypt_relay(parameter):
     return create_stamp(
         pack_protocol(parameter.protocol) +
         pack_text(parameter.address)
+    )
+
+
+def build_doh_relay(parameter):
+    if len(parameter.hashes) == 0:
+        parameter.hashes.append("")
+
+    return create_stamp(
+        pack_protocol(parameter.protocol) +
+        pack_options(parameter.options) +
+        pack_text(parameter.address) +
+        pack_raw_array(parameter.hashes) +
+        pack_text(parameter.hostname) +
+        pack_text(parameter.path) +
+        pack_text_array(parameter.bootstrap_ips)
     )
 
 
@@ -130,8 +168,14 @@ def build(parameter):
         return build_doh(parameter)
     elif parameter.protocol == Protocol.DOT:
         return build_dot(parameter)
+    elif parameter.protocol == Protocol.DOQ:
+        return build_doq(parameter)
+    elif parameter.protocol == Protocol.DOH_TARGET:
+        return build_doh_target(parameter)
     elif parameter.protocol == Protocol.DNSCRYPT_RELAY:
         return build_dnscrypt_relay(parameter)
+    elif parameter.protocol == Protocol.DOH_RELAY:
+        return build_doh_relay(parameter)
 
 
 def prepare_plain(address, options=None):
@@ -205,10 +249,67 @@ def prepare_dot(address, hashes, hostname, options=None, bootstrap_ips=None):
     return parameter
 
 
+def prepare_doq(address, hashes, hostname, options=None, bootstrap_ips=None):
+    parameter = Parameter()
+    parameter.protocol = Protocol.DOQ
+
+    if options is None:
+        parameter.options = []
+    else:
+        parameter.options = options
+
+    parameter.address = address
+    parameter.hashes = hashes
+    parameter.hostname = hostname
+
+    if bootstrap_ips is None:
+        parameter.bootstrap_ips = []
+    else:
+        parameter.bootstrap_ips = bootstrap_ips
+
+    return parameter
+
+
+def prepare_doh_target(hostname, path, options=None):
+    parameter = Parameter()
+    parameter.protocol = Protocol.DOH_TARGET
+
+    if options is None:
+        parameter.options = []
+    else:
+        parameter.options = options
+
+    parameter.hostname = hostname
+    parameter.path = path
+    return parameter
+
+
 def prepare_dnscrypt_relay(address):
     parameter = Parameter()
     parameter.protocol = Protocol.DNSCRYPT_RELAY
     parameter.address = address
+    return parameter
+
+
+def prepare_doh_relay(address, hashes, hostname, path, options=None, bootstrap_ips=None):
+    parameter = Parameter()
+    parameter.protocol = Protocol.DOH_RELAY
+
+    if options is None:
+        parameter.options = []
+    else:
+        parameter.options = options
+
+    parameter.address = address
+    parameter.hashes = hashes
+    parameter.hostname = hostname
+    parameter.path = path
+
+    if bootstrap_ips is None:
+        parameter.bootstrap_ips = []
+    else:
+        parameter.bootstrap_ips = bootstrap_ips
+
     return parameter
 
 
@@ -228,5 +329,17 @@ def create_dot(address, hashes, hostname, options=None, bootstrap_ips=None):
     return build(prepare_dot(address, hashes, hostname, options, bootstrap_ips))
 
 
+def create_doq(address, hashes, hostname, options=None, bootstrap_ips=None):
+    return build(prepare_doq(address, hashes, hostname, options, bootstrap_ips))
+
+
+def create_doh_target(hostname, path, options=None):
+    return build(prepare_doh_target(hostname, path, options))
+
+
 def create_dnscrypt_relay(address):
     return build(prepare_dnscrypt_relay(address))
+
+
+def create_doh_relay(address, hashes, hostname, path, options=None, bootstrap_ips=None):
+    return build(prepare_doh_relay(address, hashes, hostname, path, options, bootstrap_ips))
