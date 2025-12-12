@@ -33,12 +33,11 @@ def pack_text_array(array):
 
 
 def pack_text(text, set_high_bit=False):
-    encoded = text.encode('utf-8')
-    length = len(encoded)
+    length = len(text)
     if set_high_bit:
         length |= (1 << 7)
 
-    return struct.pack("<B", length) + encoded
+    return struct.pack("<B", length) + text.encode('raw-unicode-escape')
 
 
 def pack_raw_array(array):

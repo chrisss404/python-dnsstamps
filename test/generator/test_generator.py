@@ -243,6 +243,16 @@ class TestGenerator(unittest.TestCase):
             dnsstamps.create_doh_target(hostname, path, options),
             "Invalid stamp")
 
+    def test_generate_doh_target_stamp_with_umlauts_in_hostname(self):
+        hostname = "döh-tärget.example.cöm"
+        path = "/dns-query"
+        options = [Option.NO_LOGS, Option.NO_FILTERS]
+
+        self.assertEqual(
+            "sdns://BQYAAAAAAAAAFmT2aC105HJnZXQuZXhhbXBsZS5j9m0KL2Rucy1xdWVyeQ",
+            dnsstamps.create_doh_target(hostname, path, options),
+            "Invalid stamp")
+
     def test_generate_dnscrypt_relay_stamp(self):
         address = "127.0.0.1:443"
         self.assertEqual(

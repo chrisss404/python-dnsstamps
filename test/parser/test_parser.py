@@ -257,6 +257,14 @@ class TestParser(unittest.TestCase):
         self.assertEqual("doh-target.example.com", parameter.hostname, "Invalid hostname")
         self.assertEqual("/dns-query", parameter.path, "Invalid path")
 
+    def test_parse_doh_target_stamp_with_umlauts_in_hostname(self):
+        parameter = dnsstamps.parse("sdns://BQYAAAAAAAAAFmT2aC105HJnZXQuZXhhbXBsZS5j9m0KL2Rucy1xdWVyeQ")
+
+        self.assertEqual(Protocol.DOH_TARGET, parameter.protocol, "Invalid protocol")
+        self.assertEqual([Option.NO_LOGS, Option.NO_FILTERS], parameter.options, "Invalid options")
+        self.assertEqual("döh-tärget.example.cöm", parameter.hostname, "Invalid hostname")
+        self.assertEqual("/dns-query", parameter.path, "Invalid path")
+
     def test_parse_dnscrypt_relay_stamp(self):
         parameter = dnsstamps.parse("sdns://gQ0xMjcuMC4wLjE6NDQz")
 

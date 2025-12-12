@@ -64,7 +64,7 @@ def consume_text(state):
             state.data = state.data[1:]
             return ""
 
-        text = state.data[1:length + 1].decode('utf-8')
+        text = state.data[1:length + 1].decode('raw-unicode-escape')
         state.data = state.data[length + 1:]
         return text
     except Exception as e:
